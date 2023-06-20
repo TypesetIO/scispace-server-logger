@@ -2,8 +2,8 @@
     Base Classes for the server logger
 """
 
-from scispace_logger.s3_client.kinesis_firehose_cli import KinesisFirehoseClient
-from scispace_logger.constants import DEFAULT_APP_NAME, ERROR, INFO, WARNING, DEBUG, \
+from ..s3_client.kinesis_firehose_cli import KinesisFirehoseClient
+from ..constants import DEFAULT_APP_NAME, ERROR, INFO, WARNING, DEBUG, \
     DELIVERY_STREAM_NAME
 
 
