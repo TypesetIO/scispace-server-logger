@@ -1,1 +1,5 @@
-from scispace_logger.logger import ScispaceLogger
+"""
+    Export Commonly used service for easy importing
+"""
+
+from .logger import ScispaceLogger
