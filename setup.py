@@ -16,6 +16,6 @@ setuptools.setup(
         "Bug Tracker": "https://github.com/TypesetIO/scispace-server-logger/issues"
     },
     license='MIT',
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(where='src'),
     install_requires=['boto3'],
 )
