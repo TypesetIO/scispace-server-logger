@@ -1,8 +1,7 @@
 """
     Logger Service related class for scispace app
 """
-
-from scispace_logger.logger.base import BaseServerLogger
+from .base import BaseServerLogger
 
 
 class ScispaceLogger(BaseServerLogger):
