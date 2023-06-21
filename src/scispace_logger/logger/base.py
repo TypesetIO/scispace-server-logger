@@ -3,7 +3,7 @@
 """
 
 from ..s3_client.kinesis_firehose_cli import KinesisFirehoseClient
-from ..constants import DEFAULT_APP_NAME, ERROR, INFO, WARNING, DEBUG, \
+from ..constants import ERROR, INFO, WARNING, DEBUG, \
     DELIVERY_STREAM_NAME
 
 
@@ -18,7 +18,7 @@ class BaseServerLogger(object):
         delivery_stream_name = kwargs.get(
             'delivery_stream_name', DELIVERY_STREAM_NAME)
         self.logger_cli = KinesisFirehoseClient()
-        self.app_name = DEFAULT_APP_NAME
+        self.app_name = None
         self.service = service_name
         self.delivery_stream_name = delivery_stream_name
 
