@@ -1,6 +1,7 @@
 """
     Client for pushing the events into AWS KINESIS through boto3
 """
+import os
 import json
 import boto3
 
@@ -11,7 +12,10 @@ class KinesisFirehoseClient(object):
     """
 
     def __init__(self) -> None:
-        self._cli = boto3.client('firehose')
+        aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
+        aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+        self._cli = boto3.client(
+            'firehose', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
     def push_record(self, **kwargs):
         """

@@ -34,13 +34,15 @@ class BaseServerLogger(object):
         exc_info = kwargs.get('exc_info')
         extra = kwargs.get('extra')
         user_id = kwargs.get('user_id')
+        env = kwargs.get('env')
         log_info = dict(
             user_id=user_id,
             message=message,
             app=self.app_name,
             service=self.service,
             traceback=exc_info,
-            info=extra
+            info=extra,
+            env=env
         )
         return log_info
 
