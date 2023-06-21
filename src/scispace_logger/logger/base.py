@@ -28,7 +28,8 @@ class BaseServerLogger(object):
             delivery_stream_name=self.delivery_stream_name,
             data=log_info
         )
-        self.logger_cli.push_record(**logger_kwargs)
+        if self.logger_cli:
+            self.logger_cli.push_record(**logger_kwargs)
 
     def _get_log_info(self, message, **kwargs):
         exc_info = kwargs.get('exc_info')
