@@ -4,23 +4,21 @@
 
 from ..s3_client.kinesis_firehose_cli import KinesisFirehoseClient
 from ..constants import ERROR, INFO, WARNING, DEBUG, \
-    DELIVERY_STREAM_NAME
+    DELIVERY_STREAM_NAME, ENV, APP_NAME, ENABLE_SCISPACE_LOGGER
 
 
 class BaseServerLogger(object):
     """
         Base Class for construction of logs and pushing to log service
-
-        __init__ requires service_name as one of the arguments
     """
 
-    def __init__(self, service_name, **kwargs) -> None:
-        delivery_stream_name = kwargs.get(
+    def __init__(self, **kwargs) -> None:
+        self.delivery_stream_name = kwargs.get(
             'delivery_stream_name', DELIVERY_STREAM_NAME)
-        self.logger_cli = KinesisFirehoseClient()
-        self.app_name = None
-        self.service = service_name
-        self.delivery_stream_name = delivery_stream_name
+        if ENABLE_SCISPACE_LOGGER and self.delivery_stream_name:
+            self.logger_cli = KinesisFirehoseClient()
+        else:
+            self.logger_cli = None
 
     def _log(self, **kwargs):
         log_info = kwargs.get('log_info', {})
@@ -35,15 +33,13 @@ class BaseServerLogger(object):
         exc_info = kwargs.get('exc_info')
         extra = kwargs.get('extra')
         user_id = kwargs.get('user_id')
-        env = kwargs.get('env')
         log_info = dict(
             user_id=user_id,
             message=message,
-            app=self.app_name,
-            service=self.service,
             traceback=exc_info,
             info=extra,
-            env=env
+            env=ENV,
+            app=APP_NAME
         )
         return log_info
 
