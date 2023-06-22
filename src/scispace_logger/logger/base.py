@@ -18,6 +18,7 @@ class BaseServerLogger(object):
         if ENABLE_SCISPACE_LOGGER and self.delivery_stream_name:
             self.logger_cli = KinesisFirehoseClient()
         else:
+            print('Scispace Logger is not enabled.')
             self.logger_cli = None
 
     def _log(self, **kwargs):

@@ -27,6 +27,10 @@ class KinesisFirehoseClient(object):
         """
         delivery_stream_name = kwargs.get('delivery_stream_name')
         data = kwargs.get('data')
+        if not self._cli:
+            print('Boto3 Client connection is not established.')
+            return None
+
         response = self._cli.put_record(
             DeliveryStreamName=delivery_stream_name,
             Record={
