@@ -1,1 +1,1 @@
-from .logger import ScispaceLogger, NLPLogger
+from .logger import ScispaceLogger
