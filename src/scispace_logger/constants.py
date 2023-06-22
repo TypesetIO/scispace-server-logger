@@ -12,9 +12,9 @@ DEBUG = 'DEBUG'
 
 # KINESIS RELATED CONSTANTS
 DELIVERY_STREAM_NAME = os.getenv(
-    'DELIVERY_STREAM_NAME', 'scispace-server-logs')
+    'SCISPACE_LOGGER_DELIVERY_STREAM_NAME', 'scispace-server-logs')
 
 # Client Related CONSTANTS
-ENV = os.getenv('ENV')
-APP_NAME = os.getenv('APP_NAME')
+ENV = os.getenv('SCISPACE_LOGGER_ENV')
+APP_NAME = os.getenv('SCISPACE_LOGGER_APP_NAME')
 ENABLE_SCISPACE_LOGGER = os.getenv('ENABLE_SCISPACE_LOGGER')
