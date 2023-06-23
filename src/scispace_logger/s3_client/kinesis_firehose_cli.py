@@ -1,9 +1,10 @@
 """
     Client for pushing the events into AWS KINESIS through boto3
 """
-import os
 import json
 import boto3
+
+from ..constants import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION_NAME
 
 
 class KinesisFirehoseClient(object):
@@ -12,11 +13,11 @@ class KinesisFirehoseClient(object):
     """
 
     def __init__(self) -> None:
-        aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
-        aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
         try:
             self._cli = boto3.client(
-                'firehose', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+                'firehose', aws_access_key_id=AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                region_name=AWS_REGION_NAME)
         except Exception as e:
             print('Exception while establishing boto3 connection: ', str(e))
             self._cli = None
