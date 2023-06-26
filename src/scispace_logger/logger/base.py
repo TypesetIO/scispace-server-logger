@@ -22,6 +22,12 @@ class BaseServerLogger(object):
             print('Scispace Logger is not enabled.')
             self.logger_cli = None
 
+    def _override_keys(self, data, prefix=''):
+        result = dict()
+        for key, value in data.items():
+            result[prefix + key] = value
+        return result
+
     def _log(self, **kwargs):
         log_info = kwargs.get('log_info', {})
         logger_kwargs = dict(
