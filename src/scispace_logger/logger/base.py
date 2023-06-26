@@ -15,6 +15,7 @@ class BaseServerLogger(object):
     def __init__(self, **kwargs) -> None:
         self.delivery_stream_name = kwargs.get(
             'delivery_stream_name', DELIVERY_STREAM_NAME)
+        self.service_name = kwargs.get('service_name')
         if ENABLE_SCISPACE_LOGGER and self.delivery_stream_name:
             self.logger_cli = KinesisFirehoseClient()
         else:
@@ -33,7 +34,7 @@ class BaseServerLogger(object):
     def _get_log_info(self, message, **kwargs):
         exc_info = kwargs.get('exc_info')
         extra = kwargs.get('extra')
-        service_name = kwargs.get('service_name')
+        service_name = kwargs.get('service_name', self.service_name)
         user_id = kwargs.get('user_id')
         log_info = dict(
             user_id=user_id,
