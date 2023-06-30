@@ -24,6 +24,8 @@ class BaseServerLogger(object):
 
     def _override_keys(self, data, prefix=''):
         result = dict()
+        if not data:
+            return result
         for key, value in data.items():
             result[prefix + key] = value
         return result
