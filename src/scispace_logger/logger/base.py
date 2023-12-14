@@ -1,6 +1,7 @@
 """
     Base Classes for the server logger
 """
+from copy import deepcopy
 
 from ..s3_client.kinesis_firehose_cli import KinesisFirehoseClient
 from ..constants import ERROR, INFO, WARNING, DEBUG, \
@@ -40,17 +41,13 @@ class BaseServerLogger(object):
             self.logger_cli.push_record(**logger_kwargs)
 
     def _get_log_info(self, message, **kwargs):
-        exc_info = kwargs.get('exc_info')
-        extra = kwargs.get('extra')
-        service_name = kwargs.get('service_name', self.service_name)
-        user_id = kwargs.get('user_id')
+        kwargs_for_logs = deepcopy(kwargs)
+        extra = kwargs_for_logs.pop('extra', {})
         log_info = dict(
-            user_id=user_id,
             message=message,
-            traceback=exc_info,
             env=ENV,
             app_name=APP_NAME,
-            service_name=service_name,
+            **kwargs_for_logs,
             **extra
         )
         return log_info
