@@ -5,7 +5,8 @@ from copy import deepcopy
 
 from ..s3_client.kinesis_firehose_cli import KinesisFirehoseClient
 from ..constants import ERROR, INFO, WARNING, DEBUG, \
-    DELIVERY_STREAM_NAME, ENV, APP_NAME, ENABLE_SCISPACE_LOGGER
+    DELIVERY_STREAM_NAME, ENV, APP_NAME, ENABLE_SCISPACE_LOGGER, \
+    ENABLE_SCISPACE_EVENT_HANDLERS
 
 
 class BaseServerLogger(object):
@@ -17,11 +18,22 @@ class BaseServerLogger(object):
         self.delivery_stream_name = kwargs.get(
             'delivery_stream_name', DELIVERY_STREAM_NAME)
         self.service_name = kwargs.get('service_name')
-        if ENABLE_SCISPACE_LOGGER and self.delivery_stream_name:
-            self.logger_cli = KinesisFirehoseClient()
+        self.aws_access_key_id = None
+        self.aws_secret_access_key = None
+        self.region_name = None
+
+    def _get_logger_cli(self, **kwargs):
+        if (ENABLE_SCISPACE_LOGGER or ENABLE_SCISPACE_EVENT_HANDLERS) and self.delivery_stream_name:
+            kwargs_for_firehose = dict()
+            if self.aws_access_key_id:
+                kwargs_for_firehose['aws_access_key_id'] = self.aws_access_key_id
+            if self.aws_secret_access_key:
+                kwargs_for_firehose['aws_secret_access_key'] = self.aws_secret_access_key
+            if self.region_name:
+                kwargs_for_firehose['region_name'] = self.region_name
+            return KinesisFirehoseClient(**kwargs_for_firehose)
         else:
-            print('Scispace Logger is not enabled.')
-            self.logger_cli = None
+            return None
 
     def _override_keys(self, data, prefix=''):
         result = dict()
@@ -37,8 +49,9 @@ class BaseServerLogger(object):
             delivery_stream_name=self.delivery_stream_name,
             data=log_info
         )
-        if self.logger_cli:
-            self.logger_cli.push_record(**logger_kwargs)
+        logger_cli = self._get_logger_cli()
+        if logger_cli:
+            logger_cli.push_record(**logger_kwargs)
 
     def _get_log_info(self, message, **kwargs):
         kwargs_for_logs = deepcopy(kwargs)

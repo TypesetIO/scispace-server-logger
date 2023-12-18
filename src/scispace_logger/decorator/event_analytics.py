@@ -4,7 +4,7 @@ import logging
 
 from ..events.trace_events import TraceEvents
 from ..logger.base import BaseServerLogger
-from ..constants import DEFAULT_LOGGER
+from ..constants import DEFAULT_LOGGER, ENABLE_SCISPACE_EVENT_HANDLERS
 
 logger = logging.getLogger(DEFAULT_LOGGER)
 scispace_logger = BaseServerLogger()
@@ -15,7 +15,7 @@ def handle_event_analytics(analytics_service):
     """
     def trace_func(func):
         def wrapper(self, *args, **kwargs):
-            if not analytics_service:
+            if not analytics_service or not ENABLE_SCISPACE_EVENT_HANDLERS:
                 return func(self, *args, **kwargs)
 
             # Main Class handling the tracing of all args, kwargs

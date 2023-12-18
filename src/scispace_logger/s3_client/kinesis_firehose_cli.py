@@ -12,12 +12,15 @@ class KinesisFirehoseClient(object):
         Client to connect to Kinesis Firehose service in AWS
     """
 
-    def __init__(self) -> None:
+    def __init__(self, aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+        region_name=AWS_REGION_NAME
+    ) -> None:
         try:
             self._cli = boto3.client(
-                'firehose', aws_access_key_id=AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-                region_name=AWS_REGION_NAME)
+                'firehose', aws_access_key_id=aws_access_key_id,
+                aws_secret_access_key=aws_secret_access_key,
+                region_name=region_name)
         except Exception as e:
             print('Exception while establishing boto3 connection: ', str(e))
             self._cli = None
