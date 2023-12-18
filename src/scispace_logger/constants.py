@@ -10,7 +10,7 @@ def return_bool(string):
     """
         Util Function to return env variable bool
     """
-    if string.lower() in TRUE_VALUES:
+    if string and string.lower() in TRUE_VALUES:
         return True
     return False
 
